@@ -14,9 +14,10 @@
     state: absent
 
 - name: create index
+  become: yes
   template:
     src: templates/index.html.j2
-    dest: "/usr/share/nginx/html/{{ nginx_sitename }}"
+    dest: "/usr/share/nginx/html/{{ nginx_sitename }}/index.html"
   loop: "{{ list }}"
   loop_control:
     loop_var: nginx_sitename
@@ -31,7 +32,7 @@
   become: yes
   template:
     src: templates/ansible.conf.j2
-    dest: "/etc/nginx/sites-avaible/{{ nginx_sitename }}/index.html"
+    dest: "/etc/nginx/sites-avaible/{{ nginx_sitename }}"
   loop: "{{ list }}"
   loop_control:
     loop_var: nginx_sitename
