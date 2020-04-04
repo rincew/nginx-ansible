@@ -2,3 +2,11 @@
 list:
   - test.rince.net
   - test2.rince.net
+
+upstream:
+  upstream1:
+    server: "127.0.0.1:8002"
+  upstream2:
+    server: "127.0.0.1:8003"
+  upstream3:
+    server: "127.0.0.2:8004"
