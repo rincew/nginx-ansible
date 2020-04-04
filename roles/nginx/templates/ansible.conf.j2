@@ -1,9 +1,11 @@
-{% block http_upstream %}
-{% for upstream in nginx_upstreams %}
+{% block upstream %}
+{% for upstream in upstream %}
     upstream {{ upstream.name }} {
-{% for server in upstream.servers %}
+{% for server in upstream.server %}
         server {{ server }};
     }
+{% endfor %}
+{% endblock %}
 
 server {
     listen 80;
