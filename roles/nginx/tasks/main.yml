@@ -21,7 +21,13 @@
   loop: "{{ list }}"
   loop_control:
     loop_var: nginx_sitename
-    
+
+- name: remove default index
+  become: yes
+  file:
+    path: /usr/share/nginx/html/index.html
+    state: absent
+
 - name: create index
   become: yes
   template:
