@@ -1,17 +1,16 @@
 {% block upstream %}
-{% for upstream in upstream %}
-    upstream {{ upstream.name }} {
-{% for server in upstream.server %}
-        server {{ server }};
-{% endfor %}
-    }
+{% for name in upstream %}
+{% set _name = upstream[name] %}
+upstream {{ name }} {
+    server {{ _name['server'] }};
+}
 {% endfor %}
 {% endblock %}
 
 server {
     listen 80;
-    server_name {{ nginx_sitename }};
-        
+    server_name;
+
     location / {
         root /usr/share/nginx/html/{{ nginx_sitename }};
         index index.html index.htm;
