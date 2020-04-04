@@ -1,9 +1,12 @@
+{% block upstream %}
 {% for upstream in upstream %}
     upstream {{ upstream.name }} {
 {% for server in upstream.server %}
         server {{ server }};
+{% endfor %}
     }
 {% endfor %}
+{% endblock %}
 
 server {
     listen 80;
