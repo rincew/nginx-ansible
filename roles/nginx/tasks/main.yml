@@ -1,20 +1,48 @@
 ---
-#- name: install nginx
-#  become: yes
-#  apt:
-#    name: nginx
-#    state: present
-#  notify:
-#    - enable nginx
+- name: install nginx
+  become: yes
+  apt:
+    name: nginx
+    state: present
+  notify:
+    - enable nginx
 
-#- name: delete default
-#  become: yes
-#  file:
-#    path: /etc/nginx/sites-enabled/default
-#    state: absent
+- name: delete default
+  become: yes
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
 
 - name: create index
   template:
     src: templates/index.html.j2
-    dest: /home/rincewind/"{{ item }}"
-  loop: "{{ nginx_sitename }}"
+    dest: "/usr/share/nginx/html/{{ nginx_sitename }}"
+  loop: "{{ list }}"
+  loop_control:
+    loop_var: nginx_sitename
+    
+- name: delete link
+  become: yes
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+    
+- name: create new config
+  template:
+    src: templates/ansible.conf.j2
+    dest: "/etc/nginx/sites-avaible/{{ nginx_sitename }}"
+  loop: "{{ list }}"
+  loop_control:
+    loop_var: nginx_sitename
+    
+ - name: link new config
+   become: yes
+   file:
+     scr: "/etc/nginx/sites-avaible/{{ nginx_sitename }}"
+     dest: "/etc/nginx/sites-enabled/{{ nginx_sitename }}"
+     state: link
+   loop: "{{ list }}"
+   loop_control:
+     loop_var: nginx_sitename
+   notify: 
+     - enable nginx
