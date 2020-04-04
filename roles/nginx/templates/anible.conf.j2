@@ -1,0 +1,9 @@
+server {
+    listen 80 default_server;
+    servername {{ nginx_sitename }};
+        
+    location / {
+        root /usr/share/nginx/html/{{ nginx_sitename }};
+        index index.html index.htm;
+    }
+}
