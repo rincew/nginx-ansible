@@ -28,9 +28,10 @@
     state: absent
     
 - name: create new config
+  become: yes
   template:
     src: templates/ansible.conf.j2
-    dest: "/etc/nginx/sites-avaible/{{ nginx_sitename }}"
+    dest: "/etc/nginx/sites-avaible/{{ nginx_sitename }}/index.html"
   loop: "{{ list }}"
   loop_control:
     loop_var: nginx_sitename
