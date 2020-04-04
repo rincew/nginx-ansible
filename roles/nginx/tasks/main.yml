@@ -38,7 +38,7 @@
 - name: link new config
   become: yes
   file:
-    scr: "/etc/nginx/sites-avaible/{{ nginx_sitename }}"
+    src: "/etc/nginx/sites-avaible/{{ nginx_sitename }}"
     dest: "/etc/nginx/sites-enabled/{{ nginx_sitename }}"
     state: link
   loop: "{{ list }}"
