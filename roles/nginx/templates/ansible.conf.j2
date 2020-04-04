@@ -4,8 +4,6 @@
 {% for server in upstream.servers %}
         server {{ server }};
     }
-{% endfor %}
-{% endblock %}
 
 server {
     listen 80;
