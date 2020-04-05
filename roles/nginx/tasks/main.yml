@@ -1,65 +1,65 @@
 ---
-#- name: install nginx
-#  become: yes
-#  apt:
-#    name: nginx
-#    state: present
-#  notify:
-#    - enable nginx
+- name: install nginx
+  become: yes
+  apt:
+    name: nginx
+    state: present
+  notify:
+    - enable nginx
 
-#- name: delete default
-#  become: yes
-#  file:
-#    path: /etc/nginx/sites-enabled/default
-#    state: absent
+- name: delete default
+  become: yes
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
     
-#- name: create directory
-#  become: yes
-#  file:
-#    path: "/usr/share/nginx/html/{{ nginx_sitename }}"
-#    state: directory
-#  loop: "{{ list }}"
-#  loop_control:
-#    loop_var: nginx_sitename
+- name: create directory
+  become: yes
+  file:
+    path: "/usr/share/nginx/html/{{ nginx_sitename }}"
+    state: directory
+  loop: "{{ list }}"
+  loop_control:
+    loop_var: nginx_sitename
 
-#- name: remove default index
-#  become: yes
-#  file:
-#    path: /usr/share/nginx/html/index.html
-#    state: absent
+- name: remove default index
+  become: yes
+  file:
+    path: /usr/share/nginx/html/index.html
+    state: absent
 
-#- name: create index
-#  become: yes
-#  template:
-#    src: templates/index.html.j2
-#    dest: "/usr/share/nginx/html/{{ nginx_sitename }}/index.html"
-#  loop: "{{ list }}"
-#  loop_control:
-#    loop_var: nginx_sitename
-    
-#- name: delete link
-#  become: yes
-#  file:
-#    path: /etc/nginx/sites-enabled/default
-#    state: absent
-    
-- name: create new config
+- name: create index
   become: yes
   template:
-    src: templates/ansible.conf.j2
-    dest: "/home/rincewind/{{ nginx_sitename }}"
+    src: templates/index.html.j2
+    dest: "/usr/share/nginx/html/{{ nginx_sitename }}/index.html"
   loop: "{{ list }}"
   loop_control:
     loop_var: nginx_sitename
     
-#- name: link new config
-#  become: yes
-#  file:
-#    src: "/etc/nginx/sites-available/{{ nginx_sitename }}"
-#    dest: "/etc/nginx/sites-enabled/{{ nginx_sitename }}"
-#    state: link
-#  loop: "{{ list }}"
-#  loop_control:
-#    loop_var: nginx_sitename
-#  notify: 
-#    - enable nginx
+- name: delete link
+  become: yes
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+   
+- name: create new config
+  become: yes
+  template:
+    src: templates/ansible.conf.j2
+    dest: "/etc/nginx/sites-available/{{ nginx_sitename }}"
+  loop: "{{ list }}"
+  loop_control:
+    loop_var: nginx_sitename
+    
+- name: link new config
+  become: yes
+  file:
+    src: "/etc/nginx/sites-available/{{ nginx_sitename }}"
+    dest: "/etc/nginx/sites-enabled/{{ nginx_sitename }}"
+    state: link
+  loop: "{{ list }}"
+  loop_control:
+    loop_var: nginx_sitename
+  notify: 
+    - enable nginx
